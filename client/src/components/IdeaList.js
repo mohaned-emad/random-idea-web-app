@@ -5,14 +5,7 @@ class IdeaList {
     this._ideaListEl = document.querySelector('#idea-list');
     this._ideas = [];
     this.getIdeas();
-
-    this._validTags = new Set();
-    this._validTags.add('technology');
-    this._validTags.add('software');
-    this._validTags.add('business');
-    this._validTags.add('education');
-    this._validTags.add('health');
-    this._validTags.add('inventions');
+    this._validTags = new Set(['technology', 'business', 'health', 'education', 'software', 'inventions']);
   }
 
   addEventListeners() {
@@ -46,6 +39,14 @@ class IdeaList {
     }
   }
 
+  formatDate(date) {
+    const day =  String(date.getDate()).padStart(2, '0');
+    const month = String((date.getMonth()+1)).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   addIdeaToList(idea) {
     this._ideas.push(idea);
     this.render();
@@ -72,13 +73,13 @@ class IdeaList {
             : '';
         return `
       <div class="card" data-id="${idea._id}">
-     ${deleteBtn}
+        ${deleteBtn}
       <h3>
         ${idea.text}
       </h3>
       <p class="tag ${tagClass}">${idea.tag.toUpperCase()}</p>
       <p>
-        Posted on <span class="date">${idea.date}</span> by
+        Posted on <span class="date">${this.formatDate(new Date(idea.date))}</span> by
         <span class="author">${idea.username}</span>
       </p>
     </div>
